@@ -6,9 +6,8 @@ import com.example.ELK.repository.ApplicationRepository;
 import com.example.ELK.util.PdfHandler;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.util.List;
 
 @Service
 public class ApplicationService {
@@ -34,5 +33,21 @@ public class ApplicationService {
                 .geoLocation(new GeoPoint(12.2, 13.3))
                 .build();
         return repository.save(application);
+    }
+
+    public List<Application> searchByFullName(String firstName, String lastName) {
+        return repository.findByFirstNameAndLastName(firstName, lastName);
+    }
+
+    public List<Application> searchByEducation(String education) {
+        return repository.findByEducation(education);
+    }
+
+    public List<Application> searchByCvText(String cvText) {
+        return repository.findByCvText(cvText);
+    }
+
+    public List<Application> searchByCoverLetterText(String coverLetterText) {
+        return repository.findByCoverLetterText(coverLetterText);
     }
 }

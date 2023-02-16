@@ -85,3 +85,25 @@
 16-02-2023 00:54:16.292 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 9096 (G:\Master studije\Zimski semestar\Upravljanje digitalnim dokumentima\ELK\target\classes started by Anica in G:\Master studije\Zimski semestar\Upravljanje digitalnim dokumentima\ELK)
 16-02-2023 00:54:16.298 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
 16-02-2023 00:54:18.176 [main] INFO  com.example.ELK.ElkApplication.logStarted - Started ElkApplication in 2.34 seconds (process running for 2.974)
+16-02-2023 01:19:58.183 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 20388 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+16-02-2023 01:19:58.190 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+16-02-2023 01:20:00.556 [main] INFO  com.example.ELK.ElkApplication.logStarted - Started ElkApplication in 2.922 seconds (process running for 3.833)
+16-02-2023 01:21:40.320 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 10324 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+16-02-2023 01:21:40.327 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+16-02-2023 01:21:42.956 [main] INFO  com.example.ELK.ElkApplication.logStarted - Started ElkApplication in 3.14 seconds (process running for 4.879)
+16-02-2023 01:26:19.110 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 18016 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+16-02-2023 01:26:19.116 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+16-02-2023 01:27:04.188 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 18108 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+16-02-2023 01:27:04.195 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+16-02-2023 01:27:56.826 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 11688 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+16-02-2023 01:27:56.832 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+16-02-2023 01:27:58.636 [main] INFO  com.example.ELK.ElkApplication.logStarted - Started ElkApplication in 2.313 seconds (process running for 3.022)
+16-02-2023 01:34:02.586 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 8636 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+16-02-2023 01:34:02.593 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+16-02-2023 01:34:04.639 [main] INFO  com.example.ELK.ElkApplication.logStarted - Started ElkApplication in 2.567 seconds (process running for 3.406)
+16-02-2023 01:34:16.278 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 3184 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+16-02-2023 01:34:16.285 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+16-02-2023 01:34:18.224 [main] INFO  com.example.ELK.ElkApplication.logStarted - Started ElkApplication in 2.415 seconds (process running for 3.115)
+16-02-2023 01:38:53.241 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 12792 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+16-02-2023 01:38:53.248 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+16-02-2023 01:38:55.289 [main] INFO  com.example.ELK.ElkApplication.logStarted - Started ElkApplication in 2.521 seconds (process running for 3.256)
