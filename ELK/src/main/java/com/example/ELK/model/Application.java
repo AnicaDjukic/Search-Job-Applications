@@ -18,22 +18,22 @@ import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 public class Application {
 
     @Id
-    @Field(type = FieldType.Text, store = true)
-    private String filename;
+    @Field(type = FieldType.Text)
+    private String id;
 
-    @Field(type = FieldType.Text, store = true)
+    @Field(type = FieldType.Text)
     private String firstName;
 
-    @Field(type = FieldType.Text, store = true)
+    @Field(type = FieldType.Text)
     private String lastName;
 
-    @Field(type = FieldType.Text, store = true)
+    @Field(type = FieldType.Text)
     private String education;
 
-    @Field(type = FieldType.Text, store = true)
+    @Field(type = FieldType.Text)
     private String cvText;
 
-    @Field(type = FieldType.Text, store = true)
+    @Field(type = FieldType.Text)
     private String coverLetterText;
 
     @GeoPointField

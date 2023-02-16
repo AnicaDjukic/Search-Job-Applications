@@ -4,9 +4,12 @@ import org.apache.pdfbox.io.RandomAccessFile;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 @Component
 public class PdfHandler {
@@ -34,5 +37,16 @@ public class PdfHandler {
     public String getText(PDFParser parser) throws IOException {
         PDFTextStripper textStripper = new PDFTextStripper();
         return textStripper.getText(parser.getPDDocument());
+    }
+
+    public File saveFile(MultipartFile file, String path) {
+        File savedFile = new File(path);
+
+        try (OutputStream os = new FileOutputStream(savedFile)) {
+            os.write(file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return savedFile;
     }
 }

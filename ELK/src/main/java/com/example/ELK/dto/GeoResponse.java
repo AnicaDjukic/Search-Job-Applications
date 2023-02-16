@@ -3,17 +3,15 @@ package com.example.ELK.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class ApplicationDto {
+@Setter
+public class GeoResponse {
 
-    private String firstName;
-
-    private String lastName;
-
-    private String education;
-
-    private String address;
+    private List<AddressInfo> data;
 }
