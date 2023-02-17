@@ -50,24 +50,9 @@ public class ApplicationController {
         return applicant;
     }
 
-    @GetMapping("full-name")
-    public List<ResultData> searchByFullName(@RequestParam String firstName, @RequestParam String lastName) {
-        return service.searchByFullName(firstName, lastName);
-    }
-
-    @GetMapping("education")
-    public List<ResultData> searchByEducation(@RequestParam String education) {
-        return service.searchByEducation(education);
-    }
-
-    @GetMapping("cv")
-    public List<ResultData> searchByCvText(@RequestParam String cv) {
-        return service.searchByCvText(cv);
-    }
-
-    @GetMapping("cover-letter")
-    public List<ResultData> searchByCoverLetterText(@RequestParam String coverLetter) {
-        return service.searchByCoverLetterText(coverLetter);
+    @GetMapping("search")
+    public List<ResultData> searchByCoverLetterText(@RequestParam String field, @RequestParam String text) {
+        return service.search(field, text);
     }
 
 }

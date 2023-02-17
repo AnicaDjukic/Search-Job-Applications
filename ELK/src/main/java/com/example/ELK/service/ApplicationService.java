@@ -56,76 +56,17 @@ public class ApplicationService {
                         GeoResponse.class).getBody();
     }
 
-    public List<ResultData> searchByFullName(String firstName, String lastName) {
-        if(firstName.isBlank())
-            return searchByLastName(lastName);
-        if (lastName.isBlank())
-            return searchByFirstName(firstName);
-        else
-            return searchByFirstNameAndLastName(firstName, lastName);
-    }
-
-    private List<ResultData> searchByLastName(String lastName) {
+    public List<ResultData> search(String field, String text) {
         QueryBuilder query;
-        if(isPhraze(lastName))
-            query = new MatchPhraseQueryBuilder("lastName", lastName);
+        if(isPhraze(text))
+            query = new MatchPhraseQueryBuilder(field, text);
         else
-            query = QueryBuilders.matchQuery("lastName", lastName);
-        return resultRetriever.getResults(query, List.of("lastName"));
-    }
-
-    private List<ResultData> searchByFirstName(String firstName) {
-        QueryBuilder query;
-        if(isPhraze(firstName))
-            query = new MatchPhraseQueryBuilder("firstName", firstName);
-        else
-            query = QueryBuilders.matchQuery("firstName", firstName);
-        return resultRetriever.getResults(query, List.of("firstName"));
-    }
-
-    private List<ResultData> searchByFirstNameAndLastName(String firstName, String lastName) {
-        QueryBuilder firstNameQuery = QueryBuilders.matchQuery("firstName", firstName);
-        QueryBuilder lastNameQuery = QueryBuilders.matchQuery("lastName", lastName);
-        if (isPhraze(firstName))
-            firstNameQuery = new MatchPhraseQueryBuilder("firstName", firstName);
-        if (isPhraze(lastName))
-            lastNameQuery = new MatchPhraseQueryBuilder("lastName", lastName);
-
-        QueryBuilder query = QueryBuilders.boolQuery()
-                .must(firstNameQuery)
-                .must(lastNameQuery);
-        return resultRetriever.getResults(query, List.of("firstName", "lastName"));
+            query = QueryBuilders.matchQuery(field, text);
+        return resultRetriever.getResults(query, List.of(field));
     }
 
     private boolean isPhraze(String text) {
         return text.charAt(0) == '\"' && text.charAt(text.length() - 1) == '\"';
-    }
-
-    public List<ResultData> searchByEducation(String education) {
-        QueryBuilder query;
-        if(isPhraze(education))
-            query = new MatchPhraseQueryBuilder("education", education);
-        else
-            query = QueryBuilders.matchQuery("education", education);
-        return resultRetriever.getResults(query, List.of("education"));
-    }
-
-    public List<ResultData> searchByCvText(String cvText) {
-        QueryBuilder query;
-        if(isPhraze(cvText))
-            query = new MatchPhraseQueryBuilder("cvText", cvText);
-        else
-            query = QueryBuilders.matchQuery("cvText", cvText);
-        return resultRetriever.getResults(query, List.of("cvText"));
-    }
-
-    public List<ResultData> searchByCoverLetterText(String coverLetterText) {
-        QueryBuilder query;
-        if(isPhraze(coverLetterText))
-            query = new MatchPhraseQueryBuilder("coverLetterText", coverLetterText);
-        else
-            query = QueryBuilders.matchQuery("coverLetterText", coverLetterText);
-        return resultRetriever.getResults(query, List.of("coverLetterText"));
     }
 
     public Application deleteById(String id) {
@@ -133,4 +74,5 @@ public class ApplicationService {
         repository.deleteById(id);
         return application;
     }
+
 }
