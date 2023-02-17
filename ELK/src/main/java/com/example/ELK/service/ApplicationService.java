@@ -1,26 +1,18 @@
 package com.example.ELK.service;
 
-import com.example.ELK.dto.ApplicationDto;
-import com.example.ELK.dto.GeoResponse;
-import com.example.ELK.dto.ResultData;
+import com.example.ELK.dto.*;
+import com.example.ELK.exception.NotFoundException;
 import com.example.ELK.model.Application;
 import com.example.ELK.repository.ApplicationRepository;
 import com.example.ELK.util.PdfHandler;
-import org.springframework.data.elasticsearch.client.elc.NativeQuery;
-import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
-import org.springframework.data.elasticsearch.client.elc.QueryBuilders;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHit;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
-import org.springframework.data.elasticsearch.core.query.HighlightQuery;
-import org.springframework.data.elasticsearch.core.query.highlight.Highlight;
-import org.springframework.data.elasticsearch.core.query.highlight.HighlightField;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,15 +22,15 @@ public class ApplicationService {
 
     private final PdfHandler fileHandler;
 
-    private final ElasticsearchOperations elasticsearchTemplate;
-
     private final RestTemplate restTemplate;
 
-    public ApplicationService(ApplicationRepository repository, PdfHandler fileHandler, ElasticsearchOperations elasticsearchTemplate, RestTemplate restTemplate) {
+    private final ResultRetriever resultRetriever;
+
+    public ApplicationService(ApplicationRepository repository, PdfHandler fileHandler, RestTemplate restTemplate, ResultRetriever resultRetriever) {
         this.repository = repository;
         this.fileHandler = fileHandler;
-        this.elasticsearchTemplate = elasticsearchTemplate;
         this.restTemplate = restTemplate;
+        this.resultRetriever = resultRetriever;
     }
 
     public Application create(ApplicationDto applicant, MultipartFile cv, MultipartFile coverLetter) throws FileNotFoundException {
@@ -63,50 +55,45 @@ public class ApplicationService {
                         GeoResponse.class).getBody();
     }
 
-    public List<Application> searchByFullName(String firstName, String lastName) {
-        return repository.findAllByFirstNameAndLastName(firstName, lastName);
+    public List<ResultData> searchByFullName(String firstName, String lastName) {
+        if(firstName.isBlank())
+            return searchByLastName(lastName);
+        if (lastName.isBlank())
+            return searchByFirstName(firstName);
+        QueryBuilder query = QueryBuilders.boolQuery()
+                .must(QueryBuilders.termQuery("firstName", firstName))
+                .must(QueryBuilders.termQuery("lastName", lastName));
+        return resultRetriever.getResults(query);
     }
 
-    public List<ResultData> searchByFirstName(String firstName) {
-        co.elastic.clients.elasticsearch._types.query_dsl.Query query =
-                QueryBuilders.termQueryAsQuery("firstName", firstName);
-        HighlightField field = new HighlightField("education");
-        List<HighlightField> fields = new ArrayList<>();
-        fields.add(field);
-
-        NativeQuery searchQuery = new NativeQueryBuilder()
-                .withQuery(query)
-                .withHighlightQuery(new HighlightQuery(new Highlight(fields), Application.class))
-                .build();
-        List<SearchHit<Application>> sampleEntities = elasticsearchTemplate.search(searchQuery, Application.class).stream().toList();
-        List<ResultData> applications = new ArrayList<>();
-        for (var a: sampleEntities) {
-            System.out.println(a);
-            applications.add(new ResultData(a.getContent().getFirstName(), a.getContent().getLastName(), a.getContent().getEducation(), a.getContent().getCvText()));
-        }
-        return applications;
+    private List<ResultData> searchByFirstName(String firstName) {
+        QueryBuilder query = QueryBuilders.matchQuery("firstName", firstName);
+        return resultRetriever.getResults(query);
     }
 
-    public List<Application> searchByFirstName1(String firstName) {
-        List<SearchHit<Application>> searchHits = repository.findByFirstName(firstName);
-        System.out.println(searchHits);
-        List<Application> applications = new ArrayList<>();
-        for (SearchHit<Application> a: searchHits) {
-            System.out.println(a);
-            applications.add(a.getContent());
-        }
-        return applications;
+    private List<ResultData> searchByLastName(String lastName) {
+        QueryBuilder query = QueryBuilders.matchQuery("lastName", lastName);
+        return resultRetriever.getResults(query);
     }
 
-    public List<Application> searchByEducation(String education) {
-        return repository.findByEducation(education);
+    public List<ResultData> searchByEducation(String education) {
+        QueryBuilder query = QueryBuilders.matchQuery("education", education);
+        return resultRetriever.getResults(query);
     }
 
-    public List<Application> searchByCvText(String cvText) {
-        return repository.findByCvText(cvText);
+    public List<ResultData> searchByCvText(String cvText) {
+        QueryBuilder query = QueryBuilders.matchQuery("cvText", cvText);
+        return resultRetriever.getResults(query);
     }
 
-    public List<Application> searchByCoverLetterText(String coverLetterText) {
-        return repository.findByCoverLetterText(coverLetterText);
+    public List<ResultData> searchByCoverLetterText(String coverLetterText) {
+        QueryBuilder query = QueryBuilders.matchQuery("coverLetterText", coverLetterText);
+        return resultRetriever.getResults(query);
+    }
+
+    public Application deleteById(String id) {
+        Application application = repository.findById(id).orElseThrow(NotFoundException::new);
+        repository.deleteById(id);
+        return application;
     }
 }
