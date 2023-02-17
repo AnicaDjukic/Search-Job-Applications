@@ -1,5 +1,6 @@
 package com.example.ELK.controller;
 
+import com.example.ELK.dto.AdvancedSearch;
 import com.example.ELK.dto.ApplicationDto;
 import com.example.ELK.dto.ResponseDto;
 import com.example.ELK.dto.ResultData;
@@ -34,11 +35,6 @@ public class ApplicationController {
         return modelMapper.map(newApplication, ResponseDto.class);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseDto delete(@PathVariable String id) {
-        return  modelMapper.map(service.deleteById(id), ResponseDto.class);
-    }
-
     private ApplicationDto getJson(String dto) {
         ApplicationDto applicant = new ApplicationDto();
         try {
@@ -51,8 +47,18 @@ public class ApplicationController {
     }
 
     @GetMapping("search")
-    public List<ResultData> searchByCoverLetterText(@RequestParam String field, @RequestParam String text) {
+    public List<ResultData> search(@RequestParam String field, @RequestParam String text) {
         return service.search(field, text);
+    }
+
+    @PostMapping("search/advanced")
+    public List<ResultData> advancedSearch(@RequestBody AdvancedSearch advancedSearchInfo) {
+        return service.advancedSearch(advancedSearchInfo);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseDto delete(@PathVariable String id) {
+        return  modelMapper.map(service.deleteById(id), ResponseDto.class);
     }
 
 }
