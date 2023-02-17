@@ -5,6 +5,7 @@ import com.example.ELK.exception.NotFoundException;
 import com.example.ELK.model.Application;
 import com.example.ELK.repository.ApplicationRepository;
 import com.example.ELK.util.PdfHandler;
+import org.elasticsearch.index.query.MatchPhraseQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
@@ -60,34 +61,70 @@ public class ApplicationService {
             return searchByLastName(lastName);
         if (lastName.isBlank())
             return searchByFirstName(firstName);
-        QueryBuilder query = QueryBuilders.boolQuery()
-                .must(QueryBuilders.termQuery("firstName", firstName))
-                .must(QueryBuilders.termQuery("lastName", lastName));
-        return resultRetriever.getResults(query, List.of("firstName", "lastName"));
-    }
-
-    private List<ResultData> searchByFirstName(String firstName) {
-        QueryBuilder query = QueryBuilders.matchQuery("firstName", firstName);
-        return resultRetriever.getResults(query, List.of("firstName"));
+        else
+            return searchByFirstNameAndLastName(firstName, lastName);
     }
 
     private List<ResultData> searchByLastName(String lastName) {
-        QueryBuilder query = QueryBuilders.matchQuery("lastName", lastName);
+        QueryBuilder query;
+        if(isPhraze(lastName))
+            query = new MatchPhraseQueryBuilder("lastName", lastName);
+        else
+            query = QueryBuilders.matchQuery("lastName", lastName);
         return resultRetriever.getResults(query, List.of("lastName"));
     }
 
+    private List<ResultData> searchByFirstName(String firstName) {
+        QueryBuilder query;
+        if(isPhraze(firstName))
+            query = new MatchPhraseQueryBuilder("firstName", firstName);
+        else
+            query = QueryBuilders.matchQuery("firstName", firstName);
+        return resultRetriever.getResults(query, List.of("firstName"));
+    }
+
+    private List<ResultData> searchByFirstNameAndLastName(String firstName, String lastName) {
+        QueryBuilder firstNameQuery = QueryBuilders.matchQuery("firstName", firstName);
+        QueryBuilder lastNameQuery = QueryBuilders.matchQuery("lastName", lastName);
+        if (isPhraze(firstName))
+            firstNameQuery = new MatchPhraseQueryBuilder("firstName", firstName);
+        if (isPhraze(lastName))
+            lastNameQuery = new MatchPhraseQueryBuilder("lastName", lastName);
+
+        QueryBuilder query = QueryBuilders.boolQuery()
+                .must(firstNameQuery)
+                .must(lastNameQuery);
+        return resultRetriever.getResults(query, List.of("firstName", "lastName"));
+    }
+
+    private boolean isPhraze(String text) {
+        return text.charAt(0) == '\"' && text.charAt(text.length() - 1) == '\"';
+    }
+
     public List<ResultData> searchByEducation(String education) {
-        QueryBuilder query = QueryBuilders.matchQuery("education", education);
+        QueryBuilder query;
+        if(isPhraze(education))
+            query = new MatchPhraseQueryBuilder("education", education);
+        else
+            query = QueryBuilders.matchQuery("education", education);
         return resultRetriever.getResults(query, List.of("education"));
     }
 
     public List<ResultData> searchByCvText(String cvText) {
-        QueryBuilder query = QueryBuilders.matchQuery("cvText", cvText);
+        QueryBuilder query;
+        if(isPhraze(cvText))
+            query = new MatchPhraseQueryBuilder("cvText", cvText);
+        else
+            query = QueryBuilders.matchQuery("cvText", cvText);
         return resultRetriever.getResults(query, List.of("cvText"));
     }
 
     public List<ResultData> searchByCoverLetterText(String coverLetterText) {
-        QueryBuilder query = QueryBuilders.matchQuery("coverLetterText", coverLetterText);
+        QueryBuilder query;
+        if(isPhraze(coverLetterText))
+            query = new MatchPhraseQueryBuilder("coverLetterText", coverLetterText);
+        else
+            query = QueryBuilders.matchQuery("coverLetterText", coverLetterText);
         return resultRetriever.getResults(query, List.of("coverLetterText"));
     }
 

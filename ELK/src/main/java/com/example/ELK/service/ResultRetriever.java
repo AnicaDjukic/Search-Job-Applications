@@ -58,10 +58,9 @@ public class ResultRetriever {
             e.printStackTrace();
         }
 
-        for (var a: applications) {
-            System.out.println(a);
+        for (var a: applications)
             result.add(new ResultData(a.getFirstName(), a.getLastName(), a.getEducation(), a.getHighlight()));
-        }
+
         return result;
     }
 }
