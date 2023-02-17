@@ -28,4 +28,6 @@ public class IndexDto {
     private String coverLetterText;
 
     private GeoPoint geoLocation;
+
+    private String highlight;
 }

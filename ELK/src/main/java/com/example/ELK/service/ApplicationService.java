@@ -63,32 +63,32 @@ public class ApplicationService {
         QueryBuilder query = QueryBuilders.boolQuery()
                 .must(QueryBuilders.termQuery("firstName", firstName))
                 .must(QueryBuilders.termQuery("lastName", lastName));
-        return resultRetriever.getResults(query);
+        return resultRetriever.getResults(query, List.of("firstName", "lastName"));
     }
 
     private List<ResultData> searchByFirstName(String firstName) {
         QueryBuilder query = QueryBuilders.matchQuery("firstName", firstName);
-        return resultRetriever.getResults(query);
+        return resultRetriever.getResults(query, List.of("firstName"));
     }
 
     private List<ResultData> searchByLastName(String lastName) {
         QueryBuilder query = QueryBuilders.matchQuery("lastName", lastName);
-        return resultRetriever.getResults(query);
+        return resultRetriever.getResults(query, List.of("lastName"));
     }
 
     public List<ResultData> searchByEducation(String education) {
         QueryBuilder query = QueryBuilders.matchQuery("education", education);
-        return resultRetriever.getResults(query);
+        return resultRetriever.getResults(query, List.of("education"));
     }
 
     public List<ResultData> searchByCvText(String cvText) {
         QueryBuilder query = QueryBuilders.matchQuery("cvText", cvText);
-        return resultRetriever.getResults(query);
+        return resultRetriever.getResults(query, List.of("cvText"));
     }
 
     public List<ResultData> searchByCoverLetterText(String coverLetterText) {
         QueryBuilder query = QueryBuilders.matchQuery("coverLetterText", coverLetterText);
-        return resultRetriever.getResults(query);
+        return resultRetriever.getResults(query, List.of("coverLetterText"));
     }
 
     public Application deleteById(String id) {
