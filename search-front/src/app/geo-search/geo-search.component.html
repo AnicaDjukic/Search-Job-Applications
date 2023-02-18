@@ -1,0 +1,25 @@
+<div>
+    <mat-grid-list cols="1" rowHeight="100px">
+        <mat-grid-tile>
+            <h1 style="margin-right: 5rem;">Geo search</h1>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <form [formGroup]="searchForm" (ngSubmit)="submit()">
+                <mat-form-field style="margin-left: 3rem;" appearance="fill">
+                    <mat-label>Enter city</mat-label>
+                    <input matInput formControlName="city">
+                </mat-form-field>
+                <mat-form-field style="margin-left: 3rem;" appearance="fill">
+                    <mat-label>Enter radius</mat-label>
+                    <input matInput formControlName="radius" type="number">
+                </mat-form-field>
+                <button type="submit" style="margin-left: 3rem;" appearance="fill" mat-raised-button color="primary">Search</button>
+            </form>
+            
+        </mat-grid-tile>
+        <mat-grid-tile *ngFor="let searchResult of searchResults">
+            <app-search-result [searchResult]="searchResult"
+            style="width: 43%; margin-left: 4rem;" ></app-search-result>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

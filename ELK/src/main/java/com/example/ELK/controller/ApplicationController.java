@@ -5,6 +5,7 @@ import com.example.ELK.model.Application;
 import com.example.ELK.service.ApplicationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,7 @@ public class ApplicationController {
     }
 
     @PostMapping
+    @ResponseStatus(value = HttpStatus.OK)
     public ResponseDto add(@RequestParam("applicant") String dto,
                             @RequestParam("cv") MultipartFile cv,
                            @RequestParam("coverLetter") MultipartFile coverLetter) throws IOException {
@@ -43,27 +45,36 @@ public class ApplicationController {
         return applicant;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("search")
+    @ResponseStatus(value = HttpStatus.OK)
     public List<ResultData> search(@RequestParam String field, @RequestParam String text) {
         return service.search(field, text);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("search/boolean")
+    @ResponseStatus(value = HttpStatus.OK)
     public List<ResultData> search(@RequestBody BooleanBetweenFields booleanInfo) {
         return service.booleanSearch(booleanInfo);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("search/advanced")
+    @ResponseStatus(value = HttpStatus.OK)
     public List<ResultData> advancedSearch(@RequestBody AdvancedSearch advancedSearchInfo) {
         return service.advancedSearch(advancedSearchInfo);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("search/geo")
+    @ResponseStatus(value = HttpStatus.OK)
     public List<ResultData> geoLocationSearch(@RequestBody GeoLocationSearch geoLocationInfo) {
         return service.geoLocationSearch(geoLocationInfo);
     }
 
     @DeleteMapping("{id}")
+    @ResponseStatus(value = HttpStatus.OK)
     public ResponseDto delete(@PathVariable String id) {
         return  modelMapper.map(service.deleteById(id), ResponseDto.class);
     }

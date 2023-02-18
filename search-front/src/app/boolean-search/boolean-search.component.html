@@ -1,0 +1,55 @@
+<div>
+    <mat-grid-list cols="1" rowHeight="100px">
+        <mat-grid-tile>
+            <h1 style="margin-right: 5rem;">Boolean search</h1>
+        </mat-grid-tile>
+        <form [formGroup]="searchForm" (ngSubmit)="submit()">
+            <mat-grid-tile>
+                <mat-form-field style="margin-left: 2rem;" [formGroup]="searchForm" (ngSubmit)="submit()" appearance="fill">
+                    <mat-label>Choose first field</mat-label>
+                    <mat-select formControlName="field1">
+                        <mat-option value="firstName">first name</mat-option>
+                        <mat-option value="lastName">last name</mat-option>
+                        <mat-option value="education">education</mat-option>
+                        <mat-option value="cvText">CV</mat-option>
+                        <mat-option value="coverLetterText">cover letter</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field style="margin-left: 2rem;" appearance="fill">
+                    <mat-label>Enter first value</mat-label>
+                    <input matInput formControlName="value1">
+                </mat-form-field>
+
+                <mat-form-field style="margin-left: 2rem;" appearance="fill">
+                    <mat-label>Choose operation</mat-label>
+                    <mat-select formControlName="operation">
+                        <mat-option value="AND">AND</mat-option>
+                        <mat-option value="OR">OR</mat-option>
+                        <mat-option value="NOT">NOT</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field style="margin-left: 2rem;" appearance="fill">
+                    <mat-label>Choose second field</mat-label>
+                    <mat-select formControlName="field2">
+                        <mat-option value="firstName">first name</mat-option>
+                        <mat-option value="lastName">last name</mat-option>
+                        <mat-option value="education">education</mat-option>
+                        <mat-option value="cvText">CV</mat-option>
+                        <mat-option value="coverLetterText">cover letter</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field style="margin-left: 2rem;" appearance="fill">
+                    <mat-label>Enter second value</mat-label>
+                    <input matInput formControlName="value2">
+                </mat-form-field>
+                <button type="submit" style="margin-left: 2rem;" appearance="fill" mat-raised-button
+                    color="primary">Search</button>
+            </mat-grid-tile>
+        </form>
+        <mat-grid-tile *ngFor="let searchResult of searchResults">
+            <app-search-result [searchResult]="searchResult"
+            style="width: 43%; margin-left: 4rem;" ></app-search-result>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

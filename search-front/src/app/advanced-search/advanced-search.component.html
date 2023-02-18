@@ -1,0 +1,45 @@
+<div>
+    <mat-grid-list cols="1" rowHeight="100px">
+        <mat-grid-tile>
+            <h1 style="margin-right: 5rem;">Advanced search</h1>
+        </mat-grid-tile>
+        <form class="example-form" [formGroup]="searchForm">
+            <mat-grid-tile *ngFor="let group of array.controls; let i = index;" formArrayName="params">
+                <div [formGroupName]='i'>
+                    <mat-form-field style="margin-left: 3rem;" appearance="fill">
+                        <mat-label>Choose field</mat-label>
+                        <mat-select formControlName="field">
+                            <mat-option value="firstName">first name</mat-option>
+                            <mat-option value="lastName">last name</mat-option>
+                            <mat-option value="education">education</mat-option>
+                            <mat-option value="cvText">CV</mat-option>
+                            <mat-option value="coverLetterText">cover letter</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field style="margin-left: 3rem;" appearance="fill">
+                        <mat-label>Enter value</mat-label>
+                        <input matInput formControlName="value">
+                    </mat-form-field>
+                    <mat-form-field style="margin-left: 2rem;" appearance="fill">
+                        <mat-label>Choose operation</mat-label>
+                        <mat-select formControlName="operation">
+                            <mat-option value="MUST">MUST</mat-option>
+                            <mat-option value="SHOULD">SHOULD</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button (click)="add()" style="margin-left: 3rem;" appearance="fill" mat-raised-button
+                        color="primary" *ngIf="i == array.controls.length-1">+</button>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <button (click)="submit()" appearance="fill" style="margin-right: 5rem;" mat-raised-button
+                        color="primary">Search</button>
+            </mat-grid-tile>
+        </form>
+
+
+        <mat-grid-tile *ngFor="let searchResult of searchResults">
+            <app-search-result [searchResult]="searchResult" style="width: 43%; margin-left: 4rem;"></app-search-result>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>
