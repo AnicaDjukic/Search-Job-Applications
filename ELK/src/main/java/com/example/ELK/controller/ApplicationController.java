@@ -58,6 +58,11 @@ public class ApplicationController {
         return service.advancedSearch(advancedSearchInfo);
     }
 
+    @PostMapping("search/geo")
+    public List<ResultData> geoLocationSearch(@RequestBody GeoLocationSearch geoLocationInfo) {
+        return service.geoLocationSearch(geoLocationInfo);
+    }
+
     @DeleteMapping("{id}")
     public ResponseDto delete(@PathVariable String id) {
         return  modelMapper.map(service.deleteById(id), ResponseDto.class);

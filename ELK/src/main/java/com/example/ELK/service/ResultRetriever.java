@@ -37,7 +37,6 @@ public class ResultRetriever {
         searchSourceBuilder.query(query);
         searchRequest.source(searchSourceBuilder);
         List<IndexDto> applications = new ArrayList<>();
-        List<ResultData> result = new ArrayList<>();
         try {
             SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
             if (searchResponse.getHits().getTotalHits().value > 0) {
@@ -58,7 +57,33 @@ public class ResultRetriever {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        List<ResultData> result = new ArrayList<>();
+        for (var a: applications)
+            result.add(new ResultData(a.getFirstName(), a.getLastName(), a.getEducation(), a.getHighlight()));
 
+        return result;
+    }
+
+    public List<ResultData> getResultsForGeoSearch(QueryBuilder query) {
+        SearchRequest searchRequest = new SearchRequest("applications");
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(query);
+        searchRequest.source(searchSourceBuilder);
+        List<IndexDto> applications = new ArrayList<>();
+        try {
+            SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+            if (searchResponse.getHits().getTotalHits().value > 0) {
+                org.elasticsearch.search.SearchHit[] searchHit = searchResponse.getHits().getHits();
+                for (org.elasticsearch.search.SearchHit hit : searchHit) {
+                    IndexDto index = new ObjectMapper().convertValue(hit.getSourceAsMap(), IndexDto.class);
+                    applications.add(index);
+                }
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        List<ResultData> result = new ArrayList<>();
         for (var a: applications)
             result.add(new ResultData(a.getFirstName(), a.getLastName(), a.getEducation(), a.getHighlight()));
 

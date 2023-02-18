@@ -5,16 +5,15 @@ import com.example.ELK.exception.NotFoundException;
 import com.example.ELK.model.Application;
 import com.example.ELK.repository.ApplicationRepository;
 import com.example.ELK.util.PdfHandler;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchPhraseQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.data.elasticsearch.core.geo.GeoPoint;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.elasticsearch.common.geo.GeoPoint;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -66,7 +65,7 @@ public class ApplicationService {
     }
 
     public QueryBuilder getQuery(String field, String text) {
-        if(isPhraze(text))
+        if(isPhrase(text))
             return new MatchPhraseQueryBuilder(field, text);
         return QueryBuilders.matchQuery(field, text);
     }
@@ -110,9 +109,19 @@ public class ApplicationService {
         return resultRetriever.getResults(query, fieldsForHighlight);
     }
 
-    private boolean isPhraze(String text) {
+    private boolean isPhrase(String text) {
         return text.charAt(0) == '\"' && text.charAt(text.length() - 1) == '\"';
     }
+
+    public List<ResultData> geoLocationSearch(GeoLocationSearch geoLocationInfo) {
+        GeoResponse cityGeoPoint = getGeoLocation(geoLocationInfo.getCity());
+        QueryBuilder query = QueryBuilders
+                .geoDistanceQuery("geoLocation")
+                .point(cityGeoPoint.getData().get(0).getLatitude(), cityGeoPoint.getData().get(0).getLongitude())
+                .distance(geoLocationInfo.getRadius(), DistanceUnit.MILES);
+        return resultRetriever.getResults(query, List.of());
+    }
+
 
     public Application deleteById(String id) {
         Application application = repository.findById(id).orElseThrow(NotFoundException::new);
