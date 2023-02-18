@@ -10,6 +10,8 @@ import org.elasticsearch.index.query.MatchPhraseQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,16 +71,41 @@ public class ApplicationService {
         return QueryBuilders.matchQuery(field, text);
     }
 
+    public List<ResultData> booleanSearch(BooleanBetweenFields booleanInfo) {
+        org.elasticsearch.index.query.QueryBuilder query1 = getQuery(booleanInfo.getField1(), booleanInfo.getValue1());
+        org.elasticsearch.index.query.QueryBuilder query2 = getQuery(booleanInfo.getField2(), booleanInfo.getValue2());
+
+        BoolQueryBuilder boolQuery = getBoolQuery(booleanInfo, query1, query2);
+
+        List<String> fieldsForHighlight = List.of(booleanInfo.getField1(), booleanInfo.getField2());
+        return resultRetriever.getResults(boolQuery, fieldsForHighlight);
+    }
+
+    private BoolQueryBuilder getBoolQuery(BooleanBetweenFields booleanInfo, QueryBuilder query1, QueryBuilder query2) {
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+        if(booleanInfo.getOperation().equalsIgnoreCase(BooleanOperation.AND.toString())){
+            boolQuery.must(query1);
+            boolQuery.must(query2);
+        }else if(booleanInfo.getOperation().equalsIgnoreCase(BooleanOperation.OR.toString())){
+            boolQuery.should(query1);
+            boolQuery.should(query2);
+        }else if(booleanInfo.getOperation().equalsIgnoreCase(BooleanOperation.NOT.toString())){
+            boolQuery.must(query1);
+            boolQuery.mustNot(query2);
+        }
+        return boolQuery;
+    }
+
     public List<ResultData> advancedSearch(AdvancedSearch advancedSearchInfo) {
         BoolQueryBuilder query = QueryBuilders.boolQuery();
         List<String> fieldsForHighlight = new ArrayList<>();
         for(AdvancedSearchParam param : advancedSearchInfo.getParams()) {
             if(param.getOperation().equals(Operations.MUST.toString())) {
                 query.must(getQuery(param.getField(), param.getValue()));
-                fieldsForHighlight.add(param.getField());
             } else {
                 query.should(getQuery(param.getField(), param.getValue()));
             }
+            fieldsForHighlight.add(param.getField());
         }
         return resultRetriever.getResults(query, fieldsForHighlight);
     }

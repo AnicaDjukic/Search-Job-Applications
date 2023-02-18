@@ -1,9 +1,6 @@
 package com.example.ELK.controller;
 
-import com.example.ELK.dto.AdvancedSearch;
-import com.example.ELK.dto.ApplicationDto;
-import com.example.ELK.dto.ResponseDto;
-import com.example.ELK.dto.ResultData;
+import com.example.ELK.dto.*;
 import com.example.ELK.model.Application;
 import com.example.ELK.service.ApplicationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,6 +46,11 @@ public class ApplicationController {
     @GetMapping("search")
     public List<ResultData> search(@RequestParam String field, @RequestParam String text) {
         return service.search(field, text);
+    }
+
+    @PostMapping("search/boolean")
+    public List<ResultData> search(@RequestBody BooleanBetweenFields booleanInfo) {
+        return service.booleanSearch(booleanInfo);
     }
 
     @PostMapping("search/advanced")

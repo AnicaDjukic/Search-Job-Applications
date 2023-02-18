@@ -47,7 +47,8 @@ public class ResultRetriever {
                     StringBuilder highlights = new StringBuilder();
                     for(String field : highlightedFields) {
                         HighlightField hf = hit.getHighlightFields().get(field);
-                        highlights.append(hf.fragments()[0].toString()).append(" ");
+                        if(hf != null)
+                            highlights.append(hf.fragments()[0].toString()).append(" ");
                     }
                     index.setHighlight(highlights.toString());
                     applications.add(index);
