@@ -1,5 +1,6 @@
 package com.example.ELK.service;
 
+import com.example.ELK.controller.ELKController;
 import com.example.ELK.dto.*;
 import com.example.ELK.exception.NotFoundException;
 import com.example.ELK.model.Application;
@@ -7,6 +8,8 @@ import com.example.ELK.repository.ApplicationRepository;
 import com.example.ELK.util.PdfHandler;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +32,10 @@ public class ApplicationService {
     private static final String LOCAL_PATH = "src/main/resources/files/";
 
     private static final String GEO_API_PATH = "http://api.positionstack.com/v1/forward?access_key=c8f03ed78aec4f35190a78ea6e029b1b&query=";
+
+    private static final String IP_GEO_API_PATH = "https://api.ipgeolocation.io/ipgeo?apiKey=9893ea335f724992b56c50e3c6d8efe8&ip=";
+
+    private static final Logger log = LoggerFactory.getLogger(ELKController.class);
 
     private final ApplicationRepository repository;
 
@@ -137,5 +144,19 @@ public class ApplicationService {
         Application application = repository.findById(id).orElseThrow(NotFoundException::new);
         repository.deleteById(id);
         return application;
+    }
+
+    public void receivePremiumRequest(PremiumRequest premiumRequest) {
+        String city = findCityByIpAddress(premiumRequest.getIpAddress());
+        log.info("Premium request from city: {}", city);
+    }
+
+    private String findCityByIpAddress(String ipAddress) {
+        return restTemplate.getForEntity(IP_GEO_API_PATH + ipAddress, IpGeoResponse.class).getBody().getCity();
+    }
+
+    public void receiveSuccessfulEmployment(EmploymentDto employmentDto) {
+        log.info("Employment from employee {}", employmentDto.getEmployee());
+        log.info("New employment in company {}", employmentDto.getCompany());
     }
 }

@@ -4,7 +4,6 @@ import com.example.ELK.dto.*;
 import com.example.ELK.model.Application;
 import com.example.ELK.service.ApplicationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -23,6 +22,8 @@ public class ApplicationController {
     private final ApplicationService service;
 
     private final ModelMapper modelMapper = new ModelMapper();
+
+    private static final String LOCAL_PATH = "src/main/resources/files/";
 
     public ApplicationController(ApplicationService service) {
         this.service = service;
@@ -77,9 +78,21 @@ public class ApplicationController {
         return service.geoLocationSearch(geoLocationInfo);
     }
 
+    @PostMapping("premium/request")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void receivePremiumRequest(@RequestBody PremiumRequest premiumRequest) {
+        service.receivePremiumRequest(premiumRequest);
+    }
+
+    @PostMapping("employment")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void receiveSuccessfulEmployment(@RequestBody EmploymentDto employmentDto) {
+        service.receiveSuccessfulEmployment(employmentDto);
+    }
+
     @GetMapping("file/download/{fileName}")
     public void downloadPDFResource(HttpServletResponse response, @PathVariable String fileName) throws IOException {
-        File file = new File("src/main/resources/files/" + fileName);
+        File file = new File(LOCAL_PATH + fileName);
         if (file.exists()) {
 
             String mimeType = URLConnection.guessContentTypeFromName(file.getName());
