@@ -12,6 +12,7 @@ import { GeoSearchComponent } from './geo-search/geo-search.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
     AdvancedSearchComponent,
     BooleanSearchComponent,
     GeoSearchComponent,
-    SearchResultComponent
+    SearchResultComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,

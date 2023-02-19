@@ -4,12 +4,14 @@ import { SimpleSearchComponent } from './simple-search/simple-search.component';
 import { BooleanSearchComponent } from './boolean-search/boolean-search.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 import { GeoSearchComponent } from './geo-search/geo-search.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 const routes: Routes = [
   {path: 'simple-search', component: SimpleSearchComponent},
   {path: 'boolean-search', component: BooleanSearchComponent},
   {path: 'advanced-search', component: AdvancedSearchComponent},
-  {path: 'geo-search', component: GeoSearchComponent}
+  {path: 'geo-search', component: GeoSearchComponent},
+  {path: 'statistics', component: StatisticsComponent}
 ];
 
 @NgModule({

@@ -33,7 +33,7 @@ public class ApplicationService {
 
     private static final String GEO_API_PATH = "http://api.positionstack.com/v1/forward?access_key=c8f03ed78aec4f35190a78ea6e029b1b&query=";
 
-    private static final String IP_GEO_API_PATH = "https://api.ipgeolocation.io/ipgeo?apiKey=9893ea335f724992b56c50e3c6d8efe8&ip=";
+    private static final String IP_GEO_API_PATH = "http://ip-api.com/json/";
 
     private static final Logger log = LoggerFactory.getLogger(ELKController.class);
 
