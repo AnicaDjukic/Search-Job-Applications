@@ -27,8 +27,12 @@
                             <mat-option value="SHOULD">SHOULD</mat-option>
                         </mat-select>
                     </mat-form-field>
+                    
                     <button (click)="add()" style="margin-left: 3rem;" appearance="fill" mat-raised-button
-                        color="primary" *ngIf="i == array.controls.length-1">+</button>
+                        color="primary" [disabled]="i != array.controls.length-1">+</button>
+                    <button (click)="remove(i)" style="margin-left: 3rem;" appearance="fill" mat-raised-button
+                        color="primary" [disabled]="array.controls.length == 1">-</button>
+                    
                 </div>
             </mat-grid-tile>
             <mat-grid-tile>
@@ -37,9 +41,10 @@
             </mat-grid-tile>
         </form>
 
-
-        <mat-grid-tile *ngFor="let searchResult of searchResults">
-            <app-search-result [searchResult]="searchResult" style="width: 43%; margin-left: 4rem;"></app-search-result>
-        </mat-grid-tile>
+        <div *ngFor="let searchResult of searchResults">
+            <mat-grid-tile>
+                <app-search-result [searchResult]="searchResult" style="width: 43%; margin-left: 4rem;"></app-search-result>
+            </mat-grid-tile>
+        </div>
     </mat-grid-list>
 </div>

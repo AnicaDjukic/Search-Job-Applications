@@ -1,6 +1,5 @@
 package com.example.ELK.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,4 +18,8 @@ public class ResultData {
     private String education;
 
     private String highlight;
+
+    private String cvPath;
+
+    private String coverLetterPath;
 }

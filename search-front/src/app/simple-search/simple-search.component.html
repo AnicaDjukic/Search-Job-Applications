@@ -24,9 +24,11 @@
             </form>
             
         </mat-grid-tile>
-        <mat-grid-tile *ngFor="let searchResult of searchResults">
-            <app-search-result [searchResult]="searchResult"
-            style="width: 43%; margin-left: 4rem;" ></app-search-result>
-        </mat-grid-tile>
+        <div *ngFor="let searchResult of searchResults">
+            <mat-grid-tile>
+                <app-search-result [searchResult]="searchResult" 
+                style="width: 43%; margin-left: 4rem;"></app-search-result>
+            </mat-grid-tile>
+        </div>
     </mat-grid-list>
 </div>

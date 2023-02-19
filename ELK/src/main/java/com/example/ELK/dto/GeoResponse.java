@@ -13,5 +13,5 @@ import java.util.List;
 @Setter
 public class GeoResponse {
 
-    private List<AddressInfo> data;
+    private List<GeoPointInfo> data;
 }

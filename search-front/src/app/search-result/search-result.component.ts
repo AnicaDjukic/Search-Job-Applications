@@ -14,5 +14,6 @@ export class SearchResultComponent implements OnInit {
   }
 
   @Input() searchResult!: SearchResultDto
+  path = "http://localhost:8080/api/v1/applications/file/download/"
 
 }

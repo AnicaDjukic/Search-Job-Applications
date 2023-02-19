@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AddressInfo {
+public class GeoPointInfo {
 
     private Double latitude;
 

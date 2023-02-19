@@ -27,6 +27,12 @@ public class IndexDto {
 
     private String coverLetterText;
 
+    private String cvPath;
+
+    private String coverLetterPath;
+
+    private String address;
+
     private GeoPoint geoLocation;
 
     private String highlight;

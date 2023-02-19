@@ -24,5 +24,7 @@ public class ResponseDto {
 
     private String coverLetterText;
 
+    private String address;
+
     private GeoPoint geoLocation;
 }

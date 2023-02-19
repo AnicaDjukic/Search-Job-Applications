@@ -35,6 +35,10 @@ export class AdvancedSearchComponent implements OnInit {
     this.array.push(this.addFormGroup());
   }
 
+  remove(index: number): void {
+    this.array.removeAt(index);
+  }
+
   //Fields Array
   get array(): FormArray {
     return <FormArray>this.searchForm.get('params');

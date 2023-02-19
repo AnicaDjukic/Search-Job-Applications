@@ -4,12 +4,16 @@ import com.example.ELK.dto.*;
 import com.example.ELK.model.Application;
 import com.example.ELK.service.ApplicationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.URLConnection;
 import java.util.List;
 
 @RestController
@@ -71,6 +75,25 @@ public class ApplicationController {
     @ResponseStatus(value = HttpStatus.OK)
     public List<ResultData> geoLocationSearch(@RequestBody GeoLocationSearch geoLocationInfo) {
         return service.geoLocationSearch(geoLocationInfo);
+    }
+
+    @GetMapping("file/download/{fileName}")
+    public void downloadPDFResource(HttpServletResponse response, @PathVariable String fileName) throws IOException {
+        File file = new File("src/main/resources/files/" + fileName);
+        if (file.exists()) {
+
+            String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+            if (mimeType == null) {
+                mimeType = "application/octet-stream";
+            }
+
+            response.setContentType(mimeType);
+            response.setHeader("Content-Disposition", "inline; filename=\"" + file.getName() + "\"");
+            response.setContentLength((int) file.length());
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+            FileCopyUtils.copy(inputStream, response.getOutputStream());
+
+        }
     }
 
     @DeleteMapping("{id}")

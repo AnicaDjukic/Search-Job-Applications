@@ -59,7 +59,7 @@ public class ResultRetriever {
         }
         List<ResultData> result = new ArrayList<>();
         for (var a: applications)
-            result.add(new ResultData(a.getFirstName(), a.getLastName(), a.getEducation(), a.getHighlight()));
+            result.add(new ResultData(a.getFirstName(), a.getLastName(), a.getEducation(), a.getHighlight(), a.getCvPath(), a.getCoverLetterPath()));
 
         return result;
     }
@@ -85,7 +85,7 @@ public class ResultRetriever {
         }
         List<ResultData> result = new ArrayList<>();
         for (var a: applications)
-            result.add(new ResultData(a.getFirstName(), a.getLastName(), a.getEducation(), a.getHighlight()));
+            result.add(new ResultData(a.getFirstName(), a.getLastName(), a.getEducation(), a.getAddress(), a.getCvPath(), a.getCoverLetterPath()));
 
         return result;
     }

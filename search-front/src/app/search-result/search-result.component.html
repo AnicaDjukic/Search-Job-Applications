@@ -1,6 +1,12 @@
-<mat-card>
-    <mat-card-title style="color: rgb(74, 9, 136);">
-        <u>{{ searchResult.education }} {{ searchResult.firstName }} {{ searchResult.lastName}}</u>
-    </mat-card-title>
-    <mat-card-content [innerHtml]="searchResult.highlight" style="margin-top: 1.5rem;"></mat-card-content>
-</mat-card>
+<div>
+    <mat-card style="height: max-content">
+        <mat-card-title style="color: rgb(74, 9, 136);">
+            <u>{{ searchResult.education }} {{ searchResult.firstName }} {{ searchResult.lastName}}</u>
+        </mat-card-title>
+        <mat-card-content [innerHtml]="searchResult.highlight" style="margin-top: 1.5rem;"></mat-card-content>
+        <mat-card-content>
+            <a [href]="path + searchResult.cvPath" style="margin-right: 2rem;">CV</a>
+            <a [href]="path + searchResult.coverLetterPath">Cover letter</a>
+        </mat-card-content>
+    </mat-card>
+</div>

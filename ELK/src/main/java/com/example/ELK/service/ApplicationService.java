@@ -6,10 +6,7 @@ import com.example.ELK.model.Application;
 import com.example.ELK.repository.ApplicationRepository;
 import com.example.ELK.util.PdfHandler;
 import org.elasticsearch.common.unit.DistanceUnit;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MatchPhraseQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,9 +15,20 @@ import org.elasticsearch.common.geo.GeoPoint;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ApplicationService {
+
+    private static final String CV = "cv";
+
+    private static final String COVER_LETTER = "coverLetter";
+
+    private static final String EXTENSION = ".pdf";
+
+    private static final String LOCAL_PATH = "src/main/resources/files/";
+
+    private static final String GEO_API_PATH = "http://api.positionstack.com/v1/forward?access_key=c8f03ed78aec4f35190a78ea6e029b1b&query=";
 
     private final ApplicationRepository repository;
 
@@ -37,26 +45,29 @@ public class ApplicationService {
         this.resultRetriever = resultRetriever;
     }
 
-    public Application create(ApplicationDto applicant, MultipartFile cv, MultipartFile coverLetter) throws FileNotFoundException {
-        GeoResponse response = getGeoLocation(applicant.getAddress());
-        File cvFile = fileHandler.saveFile(cv, "src/main/resources/cv.pdf");
-        File coverLetterFile = fileHandler.saveFile(coverLetter, "src/main/resources/coverLetter.pdf");
+    public Application create(ApplicationDto applicant, MultipartFile cv, MultipartFile coverLetter) {
+        String cvPath = CV + UUID.randomUUID() + EXTENSION;
+        String coverLetterPath = COVER_LETTER + UUID.randomUUID() + EXTENSION;
+        File cvFile = fileHandler.saveFile(cv, LOCAL_PATH + cvPath);
+        File coverLetterFile = fileHandler.saveFile(coverLetter, LOCAL_PATH + coverLetterPath);
+        GeoPoint geoPoint = getGeoLocation(applicant.getAddress());
         Application application = Application.builder()
                 .firstName(applicant.getFirstName())
                 .lastName(applicant.getLastName())
                 .education(applicant.getEducation())
                 .cvText(fileHandler.parseFile(cvFile))
                 .coverLetterText(fileHandler.parseFile(coverLetterFile))
-                .geoLocation(new GeoPoint(response.getData().get(0).getLatitude(), response.getData().get(0).getLongitude()))
+                .cvPath(cvPath)
+                .coverLetterPath(coverLetterPath)
+                .address(applicant.getAddress())
+                .geoLocation(geoPoint)
                 .build();
         return repository.save(application);
     }
 
-    private GeoResponse getGeoLocation(String address) {
-        return restTemplate
-                .getForEntity("http://api.positionstack.com/v1/forward?access_key=c8f03ed78aec4f35190a78ea6e029b1b&query="
-                                + address,
-                        GeoResponse.class).getBody();
+    private GeoPoint getGeoLocation(String address) {
+        GeoResponse response = restTemplate.getForEntity(GEO_API_PATH + address, GeoResponse.class).getBody();
+        return new GeoPoint(response.getData().get(0).getLatitude(), response.getData().get(0).getLongitude());
     }
 
     public List<ResultData> search(String field, String text) {
@@ -82,13 +93,13 @@ public class ApplicationService {
 
     private BoolQueryBuilder getBoolQuery(BooleanBetweenFields booleanInfo, QueryBuilder query1, QueryBuilder query2) {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-        if(booleanInfo.getOperation().equalsIgnoreCase(BooleanOperation.AND.toString())){
+        if (booleanInfo.getOperation().equalsIgnoreCase(BooleanOperation.AND.toString())) {
             boolQuery.must(query1);
             boolQuery.must(query2);
-        }else if(booleanInfo.getOperation().equalsIgnoreCase(BooleanOperation.OR.toString())){
+        } else if (booleanInfo.getOperation().equalsIgnoreCase(BooleanOperation.OR.toString())) {
             boolQuery.should(query1);
             boolQuery.should(query2);
-        }else if(booleanInfo.getOperation().equalsIgnoreCase(BooleanOperation.NOT.toString())){
+        } else if (booleanInfo.getOperation().equalsIgnoreCase(BooleanOperation.NOT.toString())) {
             boolQuery.must(query1);
             boolQuery.mustNot(query2);
         }
@@ -114,14 +125,13 @@ public class ApplicationService {
     }
 
     public List<ResultData> geoLocationSearch(GeoLocationSearch geoLocationInfo) {
-        GeoResponse cityGeoPoint = getGeoLocation(geoLocationInfo.getCity());
-        QueryBuilder query = QueryBuilders
+        GeoPoint cityGeoPoint = getGeoLocation(geoLocationInfo.getCity());
+        GeoDistanceQueryBuilder query = QueryBuilders
                 .geoDistanceQuery("geoLocation")
-                .point(cityGeoPoint.getData().get(0).getLatitude(), cityGeoPoint.getData().get(0).getLongitude())
-                .distance(geoLocationInfo.getRadius(), DistanceUnit.MILES);
-        return resultRetriever.getResults(query, List.of());
+                .point(cityGeoPoint.getLat(), cityGeoPoint.getLon())
+                .distance(geoLocationInfo.getRadius(), DistanceUnit.KILOMETERS);
+        return resultRetriever.getResultsForGeoSearch(query);
     }
-
 
     public Application deleteById(String id) {
         Application application = repository.findById(id).orElseThrow(NotFoundException::new);

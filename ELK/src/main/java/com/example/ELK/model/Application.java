@@ -5,8 +5,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.GeoPointField;
 import org.elasticsearch.common.geo.GeoPoint;
+import org.springframework.data.elasticsearch.annotations.GeoPointField;
 
 @Getter
 @Setter
@@ -38,4 +38,13 @@ public class Application {
 
     @GeoPointField
     private GeoPoint geoLocation;
+
+    @Field(type = FieldType.Text, index = false)
+    private String cvPath;
+
+    @Field(type = FieldType.Text, index = false)
+    private String coverLetterPath;
+
+    @Field(type = FieldType.Text, index = false)
+    private String address;
 }
