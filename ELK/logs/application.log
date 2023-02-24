@@ -1,1 +1,22 @@
-17-02-2023 19:50:10.923 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+19-02-2023 22:37:36.064 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 22436 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+19-02-2023 22:37:36.075 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+19-02-2023 22:37:38.878 [main] INFO  com.example.ELK.ElkApplication.logStarted - Started ElkApplication in 3.941 seconds (process running for 4.839)
+19-02-2023 22:38:14.793 [http-nio-8080-exec-8] INFO  c.e.ELK.controller.ELKController.receivePremiumRequest - Premium request from city: Novi Sad
+20-02-2023 00:03:35.581 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 2452 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+20-02-2023 00:03:35.597 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+20-02-2023 00:03:38.715 [main] INFO  com.example.ELK.ElkApplication.logStarted - Started ElkApplication in 3.692 seconds (process running for 4.47)
+20-02-2023 00:04:31.235 [http-nio-8080-exec-3] INFO  c.e.ELK.controller.ELKController.receiveSuccessfulEmployment - Employment from employee employee2@gmail.com
+20-02-2023 00:04:31.237 [http-nio-8080-exec-3] INFO  c.e.ELK.controller.ELKController.receiveSuccessfulEmployment - New employment in company Company2
+20-02-2023 10:49:54.486 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 16892 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+20-02-2023 10:49:54.521 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+20-02-2023 10:50:02.575 [main] INFO  com.example.ELK.ElkApplication.logStarted - Started ElkApplication in 9.655 seconds (process running for 12.491)
+24-02-2023 19:41:12.903 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 20012 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+24-02-2023 19:41:12.908 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+24-02-2023 19:42:06.630 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 8808 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+24-02-2023 19:42:06.638 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+24-02-2023 19:43:31.169 [main] INFO  com.example.ELK.ElkApplication.logStarting - Starting ElkApplication using Java 17.0.2 with PID 12080 (I:\UDD\ELK\target\classes started by Anica in I:\UDD\ELK)
+24-02-2023 19:43:31.175 [main] INFO  com.example.ELK.ElkApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+24-02-2023 19:43:33.647 [main] INFO  com.example.ELK.ElkApplication.logStarted - Started ElkApplication in 3.032 seconds (process running for 3.869)
+24-02-2023 19:43:40.814 [http-nio-8080-exec-2] INFO  c.e.ELK.service.EmploymentService.receivePremiumRequest - Premium request from city: Novi Sad
+24-02-2023 19:43:44.387 [http-nio-8080-exec-3] INFO  c.e.ELK.service.EmploymentService.receiveSuccessfulEmployment - Employment from employee employee2@gmail.com
+24-02-2023 19:43:44.387 [http-nio-8080-exec-3] INFO  c.e.ELK.service.EmploymentService.receiveSuccessfulEmployment - New employment in company Company2

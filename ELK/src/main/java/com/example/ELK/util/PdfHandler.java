@@ -23,7 +23,7 @@ public class PdfHandler {
             PDFParser parser = getPDFParser(file);
             return getText(parser);
         } catch (IOException e) {
-            System.out.println("Greksa pri konvertovanju dokumenta u pdf");
+            e.printStackTrace();
         }
         return null;
     }
